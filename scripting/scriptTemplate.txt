@@ -1,0 +1,77 @@
+/*
+Author: DN
+Date: dateHere
+description: run each part of the script separately and in order
+*/
+
+------------------------------------- part 1 select to tmp -------------------------------------
+-- #region
+
+DROP TABLE IF EXISTS #tmp_before_update
+
+---- Create tmp table before update
+
+
+
+----
+SELECT * FROM #tmp_before_update
+
+
+-- #endregion
+------------------------------------- part 2 add to log -------------------------------------
+-- #region
+
+declare	
+	@log_message nvarchar(max),
+	@log_source [sysname] = concat('session id:',@@SPID,'	login:',SYSTEM_USER,'	user:', USER,'	host:', HOST_NAME()) ,
+	@session_id [uniqueidentifier]  = newid(),
+	@data nvarchar(max)=(select * from #tmp_before_update	FOR XML AUTO)
+
+	set @log_message='TaskHere'
+	exec util.add_log	 @type='task' , @source	= @log_source,	@session_id = @session_id,	@message = @log_message
+	exec util.add_log	 @type='task' , @source	= @log_source,	@session_id = @session_id,	@message = @data
+
+-- #endregion
+------------------------------------- part 3 UPDATE -------------------------------------
+-- #region
+
+
+BEGIN TRAN
+
+
+
+ROLLBACK
+-- COMMIT
+
+-- #endregion
+------------------------------------- part 4 log -------------------------------------
+-- #region
+declare	
+	@log_message nvarchar(max),
+	@log_source [sysname] = concat('session id:',@@SPID,'	login:',SYSTEM_USER,'	user:', USER,'	host:', HOST_NAME()) ,
+	@session_id [uniqueidentifier]  = (select top 1 session_id from util.log where message='TaskHere' order by id desc)
+
+
+DROP TABLE IF EXISTS #tmp_after_update
+
+----- Create tmp table after update
+
+
+-----
+
+
+SELECT * FROM #tmp_after_update
+
+declare @data_after_update nvarchar(max)=(select * from #tmp_after_update 	FOR XML AUTO)
+exec util.add_log	 @type='task' , @source	= @log_source,	@session_id = @session_id,	@message = @data_after_update
+
+-- #endregion
+------------------------------------- part 5 manual checks -------------------------------------
+-- #region
+
+
+
+
+
+-- #endregion
+
