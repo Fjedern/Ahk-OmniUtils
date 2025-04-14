@@ -1,10 +1,13 @@
 #Requires AutoHotkey v2.0
-SetWorkingDir A_InitialWorkingDir
 
-#Include ..\scripting\scriptFunctions.ahk
+#Include scriptFunctions.ahk
 #Include ..\misc\interactWithAhk.ahk
 #Include ..\misc\excelToCsvInDownloads.ahk
-#Include ..\ToDoApp\ToDoMain.ahk
+#Include ..\ContextMenu\menu1.ahk
+
+<!Q:: {
+    MainMenu.Show()
+}
 
 
 Numpad1:: {
@@ -15,17 +18,21 @@ Numpad2:: {
     SelectFromWithLegalId()
 }
 
+Numpad3:: {
+    MakeUserLoginable()
+}
+
 Numpad5:: {
     ScriptTemplate()
 }
 
-Numpad6:: {
-    ToggleToDoItemsGui()
-}
+; Numpad6:: {
+;     ToggleToDoItemsGui()
+; }
 
-Numpad7:: {
-    ToggleAddItemGui()
-}
+; Numpad7:: {
+;     ToggleAddItemGui()
+; }
 
 Numpad8:: {
     ExcelToCsv()

@@ -3,20 +3,22 @@
 #Include nekoMove.ahk
 #Include debugWindow.ahk
 
+SetWorkingDir A_ScriptDir
+
 debug := false
 
 if (debug) {
     ShowDebugWindow("testText")
 }
 
-
 moveNeko := true
 NekoStartGui := Gui("+Resize")
 NekoStartGui.Add("Button", "vToggle", "Toggle").OnEvent("Click", ToggleNekoMove)
 startGuiText := NekoStartGui.Add("Text", "ym w100 h100", "direction")
 NekoStartGui.Title := "Neko"
-icon := LoadPicture(A_ScriptDir . "\neko\Resources\Awake.ico", "Icon1 w" 32 " h" 32, &imgtype)
+icon := LoadPicture("Resources\Awake.ico", "Icon1 w" 32 " h" 32, &imgtype)
 SendMessage(0x0080, 1, icon, NekoStartGui)
+TraySetIcon("Resources\Awake.ico")
 NekoStartGui.Show("w200 h40")
 
 
@@ -35,7 +37,7 @@ WinSetTransColor(NekoGui.BackColor, NekoGui)
 
 
 CurrentPic := NekoGui.Add("Pic")
-global ImageTest := A_ScriptDir . "\neko\Resources\Awake.ico"
+global ImageTest := "Resources\Awake.ico"
 
 CurrentPic.Value := ImageTest
 global currentImage := ImageTest
