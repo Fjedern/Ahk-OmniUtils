@@ -39,7 +39,7 @@ ScriptTemplate() {
 ProcessUserInput(*) {
     inputsFromGui := scriptTemplateGui.Submit()
     todayDate := FormatTime(A_Now, "yyyy-MM-dd")
-    scriptTemplate := FileRead("scripting\scriptTemplate.txt")
+    scriptTemplate := FileRead("scriptTemplate.txt")
     scriptTemplateWithDate := StrReplace(scriptTemplate, "dateHere", todayDate)
     finishedScriptTemplate := StrReplace(scriptTemplateWithDate, "TaskHere", inputsFromGui.TaskName)
 
@@ -48,3 +48,9 @@ ProcessUserInput(*) {
     scriptTemplateGui.Hide()
 }
 ; ------------------------------
+
+MakeUserLoginable() {
+    userName := A_Clipboard
+    Send "BEGIN TRANSACTION `n`nUPDATE AspNetUsers SET LockoutEnabled = 0, LockoutEnd = NULL WHERE UserName = '" userName "'`n`nROLLBACK"
+    Sleep 300
+}
